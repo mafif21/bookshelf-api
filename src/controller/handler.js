@@ -1,6 +1,7 @@
 const { nanoid } = require("nanoid");
 const books = require("../model/books");
 
+const checkName = (name) => name !== "" && name !== null && name !== undefined;
 const addBookHandler = (request, h) => {
   const {
     name,
@@ -20,8 +21,7 @@ const addBookHandler = (request, h) => {
   const updatedAt = insertedAt;
 
   // error check
-  const nameExists = name !== "" && name !== null && name !== undefined;
-  if (!nameExists) {
+  if (!checkName(name)) {
     const response = h.response({
       status: "fail",
       message: "Gagal menambahkan buku. Mohon isi nama buku",
@@ -71,10 +71,10 @@ const addBookHandler = (request, h) => {
 };
 
 const getAllBooksHandler = (request, h) => {
-  const showData = books.map((book) => ({
-    id: book.id,
-    name: book.name,
-    publisher: book.publisher,
+  const showData = books.map(({ id, name, publisher }) => ({
+    id,
+    name,
+    publisher,
   }));
 
   const response = h.response({
@@ -150,8 +150,7 @@ const editBookHandler = (request, h) => {
   const updatedAt = new Date().toISOString();
 
   // error check
-  const nameExists = name !== "" && name !== null && name !== undefined;
-  if (!nameExists) {
+  if (!checkName(name)) {
     const response = h.response({
       status: "fail",
       message: "Gagal memperbarui buku. Mohon isi nama buku",
