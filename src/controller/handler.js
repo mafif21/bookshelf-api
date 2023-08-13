@@ -20,7 +20,7 @@ const addBookHandler = (request, h) => {
   const updatedAt = insertedAt;
 
   // error check
-  const nameExists = name !== "" && name !== null;
+  const nameExists = name !== "" && name !== null && name !== undefined;
   if (!nameExists) {
     const response = h.response({
       status: "fail",
@@ -106,7 +106,7 @@ const getDetailBook = (request, h) => {
     },
   });
 
-  response.code(404);
+  response.code(200);
   return response;
 };
 
@@ -124,12 +124,13 @@ const deleteBookHandler = (request, h) => {
     return response;
   }
 
+  books.splice(index, 1);
   const response = h.response({
     status: "success",
     message: "Buku berhasil dihapus",
   });
 
-  response.code(404);
+  response.code(200);
   return response;
 };
 
@@ -148,22 +149,12 @@ const editBookHandler = (request, h) => {
   } = request.payload;
   const updatedAt = new Date().toISOString();
 
-  if (index === -1) {
-    const response = h.response({
-      status: "fail",
-      message: "Gagal memperbarui buku. Id tidak ditemukan",
-    });
-
-    response.code(404);
-    return response;
-  }
-
   // error check
-  const nameExists = name !== "" && name !== null;
+  const nameExists = name !== "" && name !== null && name !== undefined;
   if (!nameExists) {
     const response = h.response({
       status: "fail",
-      message: "Gagal menambahkan buku. Mohon isi nama buku",
+      message: "Gagal memperbarui buku. Mohon isi nama buku",
     });
 
     response.code(400);
@@ -174,10 +165,20 @@ const editBookHandler = (request, h) => {
     const response = h.response({
       status: "fail",
       message:
-        "Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount",
+        "Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount",
     });
 
     response.code(400);
+    return response;
+  }
+
+  if (index === -1) {
+    const response = h.response({
+      status: "fail",
+      message: "Gagal memperbarui buku. Id tidak ditemukan",
+    });
+
+    response.code(404);
     return response;
   }
 
