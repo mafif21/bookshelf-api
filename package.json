@@ -1,5 +1,5 @@
 {
-  "name": "bookshelf-api",
+  "name": "submissio",
   "version": "1.0.0",
   "description": "api for submission of dicoding course",
   "main": "server.js",
