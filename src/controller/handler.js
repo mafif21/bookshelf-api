@@ -69,9 +69,29 @@ const addBookHandler = (request, h) => {
   response.code(201);
   return response;
 };
+const queryParamsHandler = (datas, { name, reading, finished }) => {
+  if (name) {
+    const keyword = name.toLowerCase();
+    return datas.filter((book) => book.name.toLowerCase().includes(keyword));
+  }
+
+  if (reading) {
+    const isReading = reading == 1 ? true : false;
+    return datas.filter((book) => book.reading == isReading);
+  }
+
+  if (finished) {
+    const isFinished = finished == 1 ? true : false;
+    return datas.filter((book) => book.finished == isFinished);
+  }
+
+  return datas;
+};
 
 const getAllBooksHandler = (request, h) => {
-  const showData = books.map(({ id, name, publisher }) => ({
+  let booksStorage = queryParamsHandler(books, request.query);
+
+  const showData = booksStorage.map(({ id, name, publisher }) => ({
     id,
     name,
     publisher,
