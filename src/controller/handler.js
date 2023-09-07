@@ -76,20 +76,26 @@ const queryParamsHandler = (datas, { name, reading, finished }) => {
   }
 
   if (reading) {
-    const isReading = reading == 1 ? true : false;
-    return datas.filter((book) => book.reading == isReading);
+    let isReading = false;
+    if (reading === 1) {
+      isReading = true;
+    }
+    return datas.filter((book) => book.reading === isReading);
   }
 
   if (finished) {
-    const isFinished = finished == 1 ? true : false;
-    return datas.filter((book) => book.finished == isFinished);
+    let isFinished = false;
+    if (finished === 1) {
+      isFinished = true;
+    }
+    return datas.filter((book) => book.finished === isFinished);
   }
 
   return datas;
 };
 
 const getAllBooksHandler = (request, h) => {
-  let booksStorage = queryParamsHandler(books, request.query);
+  const booksStorage = queryParamsHandler(books, request.query);
 
   const showData = booksStorage.map(({ id, name, publisher }) => ({
     id,
