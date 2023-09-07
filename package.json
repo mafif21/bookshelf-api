@@ -4,7 +4,7 @@
   "description": "api for submission of dicoding course",
   "main": "server.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start-prod": "NODE_ENV=production node src/server.js",
     "start-dev": "nodemon src/server.js"
   },
   "keywords": [],
